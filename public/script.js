@@ -36,6 +36,7 @@ document.getElementById('uploadForm').addEventListener('submit', function(event)
   const file = fileInput.files[0];
   const loadingSpinner = document.getElementById('loadingSpinner');
   const successMessage = document.getElementById('successMessage');
+  const endpointsMessage = document.getElementById('endpointsMessage');
   const nameInput = document.getElementById('nameInput').value;
   const durationInput = document.getElementById('durationInput').value;
   const startDateInput = document.getElementById('startDateInput').value;
@@ -53,6 +54,7 @@ document.getElementById('uploadForm').addEventListener('submit', function(event)
 
     loadingSpinner.style.display = 'block';
     successMessage.style.display = 'none';
+    endpointsMessage.style.display = 'none';
 
     fetch('/upload', {
       method: 'POST',
@@ -62,7 +64,6 @@ document.getElementById('uploadForm').addEventListener('submit', function(event)
     .then(data => {
       loadingSpinner.style.display = 'none';
       successMessage.style.display = 'block';
-      // Handle success
     })
     .catch(error => {
       loadingSpinner.style.display = 'none';
@@ -72,3 +73,89 @@ document.getElementById('uploadForm').addEventListener('submit', function(event)
     alert('Please select a file to upload');
   }
 });
+
+const loadEndpoints = () => {
+  fetch('/endpoints')
+    .then(response => response.json())
+    .then(data => {
+      const fileAssetEndpointsDiv = document.getElementById('fileAssetEndpoints');
+      const assetEndpointsDiv = document.getElementById('assetEndpoints');
+
+      fileAssetEndpointsDiv.innerHTML = '';
+      assetEndpointsDiv.innerHTML = '';
+
+      data.fileAssetEndpoints.forEach((endpoint, index) => {
+        fileAssetEndpointsDiv.innerHTML += `
+          <div class="endpoint">
+            <input type="text" name="fileAssetEndpoints" value="${endpoint}" class="text-input" />
+            <button type="button" class="delete-button" onclick="deleteEndpoint(this)">Delete</button>
+          </div>
+        `;
+      });
+
+      data.assetEndpoints.forEach((endpoint, index) => {
+        assetEndpointsDiv.innerHTML += `
+          <div class="endpoint">
+            <input type="text" name="assetEndpoints" value="${endpoint}" class="text-input" />
+            <button type="button" class="delete-button" onclick="deleteEndpoint(this)">Delete</button>
+          </div>
+        `;
+      });
+    })
+    .catch(error => {
+      console.error('Error loading endpoints:', error);
+    });
+};
+
+const deleteEndpoint = (button) => {
+  const endpointDiv = button.parentElement;
+  endpointDiv.remove();
+};
+
+document.getElementById('addFileAssetEndpoint').addEventListener('click', () => {
+  const fileAssetEndpointsDiv = document.getElementById('fileAssetEndpoints');
+  fileAssetEndpointsDiv.innerHTML += `
+    <div class="endpoint">
+      <input type="text" name="fileAssetEndpoints" class="text-input" />
+      <button type="button" class="delete-button" onclick="deleteEndpoint(this)">Delete</button>
+    </div>
+  `;
+});
+
+document.getElementById('addAssetEndpoint').addEventListener('click', () => {
+  const assetEndpointsDiv = document.getElementById('assetEndpoints');
+  assetEndpointsDiv.innerHTML += `
+    <div class="endpoint">
+      <input type="text" name="assetEndpoints" class="text-input" />
+      <button type="button" class="delete-button" onclick="deleteEndpoint(this)">Delete</button>
+    </div>
+  `;
+});
+
+document.getElementById('endpointsForm').addEventListener('submit', function(event) {
+  event.preventDefault();
+  const fileAssetEndpoints = Array.from(document.getElementsByName('fileAssetEndpoints')).map(input => input.value);
+  const assetEndpoints = Array.from(document.getElementsByName('assetEndpoints')).map(input => input.value);
+
+  const newEndpoints = {
+    fileAssetEndpoints,
+    assetEndpoints
+  };
+
+  fetch('/update-endpoints', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(newEndpoints)
+  })
+  .then(response => response.json())
+  .then(data => {
+    alert(data.message);
+  })
+  .catch(error => {
+    console.error('Error updating endpoints:', error);
+  });
+});
+
+loadEndpoints();

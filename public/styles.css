@@ -2,10 +2,11 @@ body {
   font-family: Arial, sans-serif;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   height: 100vh;
   margin: 0;
   background-color: #f0f0f0;
+  overflow-y: auto;
 }
 
 .upload-container {
@@ -17,6 +18,7 @@ body {
   width: 80%;
   max-width: 1000px;
   box-sizing: border-box;
+  margin-top: 20px;
 }
 
 h1 {
@@ -49,8 +51,8 @@ h1 {
 }
 
 .text-input {
-  display: block;
-  width: calc(100% - 22px);
+  display: inline-block;
+  width: calc(80% - 22px);
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
@@ -58,21 +60,59 @@ h1 {
   box-sizing: border-box;
 }
 
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px auto;
+  text-align: center;
+  width: fit-content;
+}
+
 .checkbox-input {
-  margin-bottom: 20px;
+  display: block;
+  margin: 20px auto;
+  margin-right: 10px;
 }
 
 .submit-button {
+  display: block;
   padding: 10px 20px;
   border: none;
   border-radius: 4px;
   background-color: #28a745;
   color: #fff;
   cursor: pointer;
+  margin: 10px auto;
 }
 
-.submit-button:hover {
-  background-color: #218838;
+.add-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.add-button:hover {
+  background-color: #0056b3;
+}
+
+.delete-button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #dc3545;
+  color: #fff;
+  cursor: pointer;
+  margin-left: 10px;
+  float: right;
+}
+
+.delete-button:hover {
+  background-color: #c82333;
 }
 
 .spinner {

@@ -17,11 +17,24 @@
       <input type="number" id="durationInput" placeholder="Duration (seconds)" class="text-input" value="20" />
       <input type="datetime-local" id="startDateInput" class="text-input" value="2023-01-01T00:00" />
       <input type="datetime-local" id="endDateInput" class="text-input" value="2023-12-31T23:59" />
-      <label for="isEnabledInput">Is Enabled</label>
-      <input type="checkbox" id="isEnabledInput" class="checkbox-input" checked />
+      <div class="checkbox-container">
+        <input type="checkbox" id="isEnabledInput" class="checkbox-input" checked />
+        <label for="isEnabledInput">Is Enabled</label>
+      </div>
       <button type="submit" class="submit-button">Submit</button>
       <div id="loadingSpinner" class="spinner" style="display: none;"></div>
       <div id="successMessage" class="success-message" style="display: none;">File uploaded successfully!</div>
+      <div id="endpointsMessage" class="endpoints-message" style="display: none;"></div>
+    </form>
+    <h2>Endpoints</h2>
+    <form id="endpointsForm">
+      <h3>File Asset Endpoints</h3>
+      <div id="fileAssetEndpoints"></div>
+      <button type="button" id="addFileAssetEndpoint" class="add-button">Add File Asset Endpoint</button>
+      <h3>Asset Endpoints</h3>
+      <div id="assetEndpoints"></div>
+      <button type="button" id="addAssetEndpoint" class="add-button">Add Asset Endpoint</button>
+      <button type="submit" class="submit-button">Update Endpoints</button>
     </form>
   </div>
   <script src="script.js"></script>

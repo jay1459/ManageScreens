@@ -1,0 +1,8 @@
+{
+  "fileAssetEndpoints": [
+    "http://screenly.local/api/v2/file_asset"
+  ],
+  "assetEndpoints": [
+    "http://screenly.local/api/v2/assets"
+  ]
+}

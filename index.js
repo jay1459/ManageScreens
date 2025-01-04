@@ -1,12 +1,13 @@
 const express = require('express');
 const path = require('path');
 const dotenv = require('dotenv');
-const { uploadFile, serveIndex } = require('./routes');
+const uploadFile = require('./routes/uploadFile');
+const serveIndex = require('./routes/serveIndex');
 
 dotenv.config();
 
 const app = express();
-const port = 3000;
+const port = 80;
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));

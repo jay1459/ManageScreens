@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File Upload</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="upload-container">
+    <h1>Upload a File</h1>
+    <form id="uploadForm">
+      <input type="file" id="fileInput" class="file-input" />
+      <label for="fileInput">Choose a file</label>
+      <div id="fileDetails" class="file-details"></div>
+      <input type="text" id="nameInput" placeholder="Name" class="text-input" />
+      <input type="number" id="durationInput" placeholder="Duration (seconds)" class="text-input" value="20" />
+      <input type="datetime-local" id="startDateInput" class="text-input" value="2023-01-01T00:00" />
+      <input type="datetime-local" id="endDateInput" class="text-input" value="2023-12-31T23:59" />
+      <label for="isEnabledInput">Is Enabled</label>
+      <input type="checkbox" id="isEnabledInput" class="checkbox-input" checked />
+      <button type="submit" class="submit-button">Submit</button>
+      <div id="loadingSpinner" class="spinner" style="display: none;"></div>
+      <div id="successMessage" class="success-message" style="display: none;">File uploaded successfully!</div>
+    </form>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

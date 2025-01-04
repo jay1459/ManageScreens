@@ -1,0 +1,19 @@
+{
+  "name": "manage-screens",
+  "version": "1.0.0",
+  "description": "A project to manage screens using Anthias API",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "axios": "^0.21.4",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "form-data": "^4.0.1",
+    "multer": "^1.4.4",
+    "node": "^23.5.0"
+  },
+  "author": "",
+  "license": "ISC"
+}

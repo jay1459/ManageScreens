@@ -3,6 +3,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const FormData = require('form-data');
+const endpoints = require('../config/endpoints.json');
 
 const uploadDir = path.join(__dirname, '../uploads');
 if (!fs.existsSync(uploadDir)) {
@@ -42,17 +43,12 @@ const uploadFile = (req, res) => {
         return res.status(500).json({ error: 'Error calculating form data length' });
       }
 
-      const fileAssetEndpoints = [
-        'http://screenly.local/api/v2/file_asset',
-        'http://pi01.local/api/v2/file_asset'
-      ];
-
       const sendFileAssetToEndpoints = (index) => {
-        if (index >= fileAssetEndpoints.length) {
+        if (index >= endpoints.fileAssetEndpoints.length) {
           return handleAssetCreation();
         }
 
-        axios.post(fileAssetEndpoints[index], formData, {
+        axios.post(endpoints.fileAssetEndpoints[index], formData, {
           headers: {
             ...formData.getHeaders(),
             'Content-Length': length
@@ -66,7 +62,7 @@ const uploadFile = (req, res) => {
           sendFileAssetToEndpoints(index + 1);
         })
         .catch(error => {
-          console.error(`Error sending to file asset endpoint ${fileAssetEndpoints[index]}:`, error.message);
+          console.error(`Error sending to file asset endpoint ${endpoints.fileAssetEndpoints[index]}:`, error.message);
           sendFileAssetToEndpoints(index + 1);
         });
       };
@@ -87,18 +83,13 @@ const uploadFile = (req, res) => {
           skip_asset_check: true
         };
 
-        const assetEndpoints = [
-          'http://screenly.local/api/v2/assets',
-          'http://pi01.local/api/v2/assets'
-        ];
-
         const sendAssetToEndpoints = (index) => {
-          if (index >= assetEndpoints.length) {
+          if (index >= endpoints.assetEndpoints.length) {
             fs.unlinkSync(file.path); // Clean up the uploaded file after successful upload
             return res.json({ message: 'File and asset created successfully', data: assetData });
           }
 
-          axios.post(assetEndpoints[index], assetData, {
+          axios.post(endpoints.assetEndpoints[index], assetData, {
             headers: {
               'Content-Type': 'application/json'
             }
@@ -107,7 +98,7 @@ const uploadFile = (req, res) => {
             sendAssetToEndpoints(index + 1);
           })
           .catch(error => {
-            console.error(`Error sending to asset endpoint ${assetEndpoints[index]}:`, error.message);
+            console.error(`Error sending to asset endpoint ${endpoints.assetEndpoints[index]}:`, error.message);
             sendAssetToEndpoints(index + 1);
           });
         };

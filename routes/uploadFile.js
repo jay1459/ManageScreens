@@ -26,12 +26,16 @@ const upload = multer({ storage });
 const uploadFile = (req, res) => {
   upload.single('file')(req, res, (err) => {
     if (err) {
+      console.error('Multer error:', err);
       return res.status(500).json({ error: 'File upload failed' });
     }
 
     const file = req.file;
+    console.log('Uploaded file:', file);
+
     const validMimeTypes = ['image/jpeg', 'image/png', 'video/mp4', 'application/pdf'];
     if (!validMimeTypes.includes(file.mimetype)) {
+      console.error('Invalid file type:', file.mimetype);
       return res.status(400).json({ error: 'Invalid file type.' });
     }
 
@@ -40,6 +44,7 @@ const uploadFile = (req, res) => {
 
     formData.getLength((err, length) => {
       if (err) {
+        console.error('Error calculating form data length:', err);
         return res.status(500).json({ error: 'Error calculating form data length' });
       }
 
@@ -48,6 +53,7 @@ const uploadFile = (req, res) => {
           return handleAssetCreation();
         }
 
+        console.log(`Sending file to endpoint ${index + 1}/${endpoints.fileAssetEndpoints.length}: ${endpoints.fileAssetEndpoints[index]}`);
         axios.post(endpoints.fileAssetEndpoints[index], formData, {
           headers: {
             ...formData.getHeaders(),
@@ -55,6 +61,7 @@ const uploadFile = (req, res) => {
           }
         })
         .then(response => {
+          console.log(`Response from endpoint ${index + 1}:`, response.data);
           if (index === 0) {
             req.fileUri = response.data.uri;
             req.fileExt = response.data.ext;
@@ -83,12 +90,16 @@ const uploadFile = (req, res) => {
           skip_asset_check: true
         };
 
+        console.log('Asset data:', assetData);
+
         const sendAssetToEndpoints = (index) => {
           if (index >= endpoints.assetEndpoints.length) {
             fs.unlinkSync(file.path); // Clean up the uploaded file after successful upload
+            console.log('File and asset created successfully');
             return res.json({ message: 'File and asset created successfully', data: assetData });
           }
 
+          console.log(`Sending asset to endpoint ${index + 1}/${endpoints.assetEndpoints.length}: ${endpoints.assetEndpoints[index]}`);
           axios.post(endpoints.assetEndpoints[index], assetData, {
             headers: {
               'Content-Type': 'application/json'
